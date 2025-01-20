@@ -6,11 +6,11 @@ session_start();
 
 $admin_id = $_SESSION['admin_id'];
 
-if(!isset($admin_id)){
+if (!isset($admin_id)) {
    header('location:admin_login.php');
 }
 
-if(isset($_GET['delete'])){
+if (isset($_GET['delete'])) {
    $delete_id = $_GET['delete'];
    $delete_message = $conn->prepare("DELETE FROM `messages` WHERE id = ?");
    $delete_message->execute([$delete_id]);
@@ -21,6 +21,7 @@ if(isset($_GET['delete'])){
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,43 +35,44 @@ if(isset($_GET['delete'])){
    <link rel="stylesheet" href="../css/admin_style.css">
 
 </head>
+
 <body>
 
-<?php include '../components/admin_header.php' ?>
+   <?php include '../components/admin_header.php' ?>
 
-<!-- messages section starts  -->
+   <!-- messages section starts  -->
 
-<section class="messages">
+   <section class="messages">
 
-   <h1 class="heading">messages</h1>
+      <h1 class="heading">messages</h1>
 
-   <div class="box-container">
+      <div class="box-container">
 
-   <?php
-      $select_messages = $conn->prepare("SELECT * FROM `messages`");
-      $select_messages->execute();
-      if($select_messages->rowCount() > 0){
-         while($fetch_messages = $select_messages->fetch(PDO::FETCH_ASSOC)){
-   ?>
-   <div class="box">
-      <p> name : <span><?= $fetch_messages['name']; ?></span> </p>
-      <p> number : <span><?= $fetch_messages['number']; ?></span> </p>
-      <p> email : <span><?= $fetch_messages['email']; ?></span> </p>
-      <p> message : <span><?= $fetch_messages['message']; ?></span> </p>
-      <a href="messages.php?delete=<?= $fetch_messages['id']; ?>" class="delete-btn" onclick="return confirm('delete this message?');">delete</a>
-   </div>
-   <?php
+         <?php
+         $select_messages = $conn->prepare("SELECT * FROM `messages`");
+         $select_messages->execute();
+         if ($select_messages->rowCount() > 0) {
+            while ($fetch_messages = $select_messages->fetch(PDO::FETCH_ASSOC)) {
+         ?>
+               <div class="box">
+                  <p> name : <span><?= $fetch_messages['name']; ?></span> </p>
+                  <p> number : <span><?= $fetch_messages['number']; ?></span> </p>
+                  <p> email : <span><?= $fetch_messages['email']; ?></span> </p>
+                  <p> message : <span><?= $fetch_messages['message']; ?></span> </p>
+                  <a href="messages.php?delete=<?= $fetch_messages['id']; ?>" class="delete-btn" onclick="return confirm('delete this message?');">delete</a>
+               </div>
+         <?php
+            }
+         } else {
+            echo '<p class="empty">you have no messages</p>';
          }
-      }else{
-         echo '<p class="empty">you have no messages</p>';
-      }
-   ?>
+         ?>
 
-   </div>
+      </div>
 
-</section>
+   </section>
 
-<!-- messages section ends -->
+   <!-- messages section ends -->
 
 
 
@@ -80,8 +82,9 @@ if(isset($_GET['delete'])){
 
 
 
-<!-- custom js file link  -->
-<script src="../js/admin_script.js"></script>
+   <!-- custom js file link  -->
+   <script src="../js/admin_script.js"></script>
 
 </body>
+
 </html>

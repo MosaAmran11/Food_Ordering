@@ -1,9 +1,18 @@
 <?php
 if (isset($message)) {
-   foreach ($message as $message) {
+   if (is_array($message)) {
+      foreach ($message as $msg) {
+         echo '
+         <div class="message">
+            <span>' . htmlspecialchars($msg) . '</span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+         </div>
+         ';
+      }
+   } else {
       echo '
       <div class="message">
-         <span>' . $message . '</span>
+         <span>' . htmlspecialchars($msg) . '</span>
          <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
       </div>
       ';
@@ -46,17 +55,18 @@ if (isset($message)) {
          ?>
             <p class="name"><?= $fetch_profile['name']; ?></p>
             <div class="flex">
-               <a href="profile.php" class="btn">profile</a>
-               <a href="components/user_logout.php" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
+               <a href="profile.php" class="btn">الملف الشخصي</a>
+               <a href="components/user_logout.php" onclick="return confirm('هل أنت متأكد من تسجيل الخروج؟');" class="delete-btn">تسجيل الخروج</a>
             </div>
             <p class="account">
-               <a href="login.php">تسجيل الدخول</a> or
-               <a href="register.php">انشاء حساب جديد</a>
+               <a href="login.php">تسجيل الدخول</a> او
+               <a href="register.php">انشاء حساب</a>
             </p>
          <?php
          } else {
          ?>
-            <p class="name">الرجاء تسجيل الدخول أولا!</p>
+            <!-- <p class="name">الرجاء تسجيل الدخول أولا!</p> -->
+            <a href="register.php" class="btn">انشاء حساب</a>
             <a href="login.php" class="btn">تسجيل الدخول</a>
          <?php
          }

@@ -33,7 +33,9 @@
    </section>
 
    <div class="credit">
-      &copy; تحت اشراف <?= date('Y'); ?> حقوق النشر @<span>Dr. Thana Al-Ashwal</span> | كل الحقوق محفوظة
+      <?= date('Y'); ?> &copy; كل الحقوق محفوظة
+      <br>
+      تحت اشراف <span>Dr. Thana Al-Ashwal</span>
    </div>
 
 </footer>

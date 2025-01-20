@@ -14,10 +14,10 @@ $user_id = $_SESSION['user_id'];
 
 if (isset($_POST['submit'])) {
     // تصفية المدخلات
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $number = filter_input(INPUT_POST, 'number', FILTER_SANITIZE_STRING);
-    
+    $number = filter_input(INPUT_POST, 'number', FILTER_SANITIZE_SPECIAL_CHARS);
+
     // التحقق من تنسيق البريد الإلكتروني
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $message[] = 'البريد الإلكتروني غير صالح!';
@@ -78,42 +78,45 @@ if (isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>تحديث الملف الشخصي</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحديث الملف الشخصي</title>
 
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
-<body>
 
-   <!-- header section starts  -->
-   <?php include 'components/user_header.php'; ?>
-   <!-- header section ends -->
+<body dir="rtl">
 
-   <section class="form-container update-form">
-      <form action="" method="post">
-         <h3>تحديث الملف الشخصي</h3>
-         <input type="text" name="name" placeholder="<?= htmlspecialchars($fetch_profile['name'], ENT_QUOTES, 'UTF-8'); ?>" class="box" maxlength="50">
-         <input type="email" name="email" placeholder="<?= htmlspecialchars($fetch_profile['email'], ENT_QUOTES, 'UTF-8'); ?>" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-         <input type="number" name="number" placeholder="<?= htmlspecialchars($fetch_profile['number'], ENT_QUOTES, 'UTF-8'); ?>" class="box" min="0" max="9999999999" maxlength="10">
-         <input type="password" name="old_pass" placeholder="ادخل كلمة مرورك القديمة" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-         <input type="password" name="new_pass" placeholder="ادخل كلمة مرورك الجديدة" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-         <input type="password" name="confirm_pass" placeholder="تأكيد كلمة مرورك الجديدة" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-         <input type="submit" value="تحديث الآن" name="submit" class="btn">
-      </form>
-   </section>
+    <!-- header section starts  -->
+    <?php include 'components/user_header.php'; ?>
+    <!-- header section ends -->
 
-   <?php include 'components/footer.php'; ?>
+    <section class="form-container update-form">
+        <form action="" method="post">
+            <h3>تحديث الملف الشخصي</h3>
+            <input type="text" name="name" placeholder="<?= htmlspecialchars($fetch_profile['name'], ENT_QUOTES, 'UTF-8'); ?>" class="box" maxlength="50">
+            <input type="email" name="email" placeholder="<?= htmlspecialchars($fetch_profile['email'], ENT_QUOTES, 'UTF-8'); ?>" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="number" name="number" placeholder="<?= htmlspecialchars($fetch_profile['number'], ENT_QUOTES, 'UTF-8'); ?>" class="box" min="0" max="9999999999" maxlength="10">
+            <input type="password" name="old_pass" placeholder="ادخل كلمة مرورك القديمة" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="new_pass" placeholder="ادخل كلمة مرورك الجديدة" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="confirm_pass" placeholder="تأكيد كلمة مرورك الجديدة" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="submit" value="تحديث الآن" name="submit" class="btn">
+        </form>
+    </section>
 
-   <!-- custom js file link  -->
-   <script src="js/script.js"></script>
+    <?php include 'components/footer.php'; ?>
+
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
 
 </body>
+
 </html>

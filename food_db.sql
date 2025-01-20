@@ -46,6 +46,7 @@ CREATE TABLE `users` (
   `number` varchar(10) NOT NULL,
   `password` varchar(255) NOT NULL,  -- زيادة الطول ليتناسب مع التشفير
   `address` varchar(500) NOT NULL,
+  `email_verified` tinyint(1) NOT NULL DEFAULT 0,  -- تأكيد البريد الإلكتروني
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -101,6 +102,21 @@ CREATE TABLE `orders` (
   `total_price` int(100) NOT NULL,
   `placed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `payment_status` varchar(20) NOT NULL DEFAULT 'pending',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),  -- Add index for foreign key
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE  -- ربط مع جدول المستخدمين
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `email_verifications`
+--
+
+CREATE TABLE `email_verifications` (
+  `id` int(100) NOT NULL,
+  `user_id` int(100) NOT NULL,
+  `code` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),  -- Add index for foreign key
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE  -- ربط مع جدول المستخدمين
@@ -195,6 +211,12 @@ ALTER TABLE `orders`
   MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `email_verifications`
+--
+ALTER TABLE `email_verifications`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -211,7 +233,7 @@ ALTER TABLE `users`
 --
 
 INSERT INTO `admin` (`id`, `name`, `password`) VALUES
-(1, 'system', '');  -- استخدم دالة تجزئة مثل password_hash في PHP لتوليد هذا
+(1, 'system', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'); -- password: 123
 
 
 COMMIT;

@@ -5,9 +5,9 @@ include 'components/connect.php';
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+   $user_id = $_SESSION['user_id'];
 } else {
-    $user_id = '';
+   $user_id = '';
 }
 
 include 'components/add_cart.php';
@@ -16,6 +16,7 @@ include 'components/add_cart.php';
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,88 +28,89 @@ include 'components/add_cart.php';
    <link rel="stylesheet" href="css/style.css">
 
 </head>
-<body>
 
-<?php include 'components/user_header.php'; ?>
+<body dir="rtl">
 
-<section class="hero">
+   <?php include 'components/user_header.php'; ?>
 
-   <div class="swiper hero-slider">
-      <div class="swiper-wrapper">
+   <section class="hero">
 
-         <div class="swiper-slide slide">
-            <div class="content">
-               <span>اطلب عبر الإنترنت</span>
-               <h3>بيتزا لذيذة</h3>
-               <a href="menu.php" class="btn">انظر قائمة الطعام</a>
+      <div class="swiper hero-slider">
+         <div class="swiper-wrapper">
+
+            <div class="swiper-slide slide">
+               <div class="content">
+                  <span>اطلب عبر الإنترنت</span>
+                  <h3>بيتزا لذيذة</h3>
+                  <a href="menu.php" class="btn">انظر قائمة الطعام</a>
+               </div>
+               <div class="image">
+                  <img src="images/home-img-1.png" alt="">
+               </div>
             </div>
-            <div class="image">
-               <img src="images/home-img-1.png" alt="">
+
+            <div class="swiper-slide slide">
+               <div class="content">
+                  <span>اطلب عبر الإنترنت</span>
+                  <h3>همبرغر تشيزي</h3>
+                  <a href="menu.php" class="btn">انظر قائمة الطعام</a>
+               </div>
+               <div class="image">
+                  <img src="images/home-img-2.png" alt="">
+               </div>
             </div>
+
+            <div class="swiper-slide slide">
+               <div class="content">
+                  <span>اطلب عبر الإنترنت</span>
+                  <h3>دجاج مشوي</h3>
+                  <a href="menu.php" class="btn">انظر قائمة الطعام</a>
+               </div>
+               <div class="image">
+                  <img src="images/home-img-3.png" alt="">
+               </div>
+            </div>
+
          </div>
 
-         <div class="swiper-slide slide">
-            <div class="content">
-               <span>اطلب عبر الإنترنت</span>
-               <h3>همبرغر تشيزي</h3>
-               <a href="menu.php" class="btn">انظر قائمة الطعام</a>
-            </div>
-            <div class="image">
-               <img src="images/home-img-2.png" alt="">
-            </div>
-         </div>
-
-         <div class="swiper-slide slide">
-            <div class="content">
-               <span>اطلب عبر الإنترنت</span>
-               <h3>دجاج مشوي</h3>
-               <a href="menu.php" class="btn">انظر قائمة الطعام</a>
-            </div>
-            <div class="image">
-               <img src="images/home-img-3.png" alt="">
-            </div>
-         </div>
+         <div class="swiper-pagination"></div>
 
       </div>
 
-      <div class="swiper-pagination"></div>
+   </section>
 
-   </div>
+   <section class="category">
+      <h1 class="title">انواع الاطعمة</h1>
+      <div class="box-container">
 
-</section>
+         <a href="category.php?category=fast food" class="box">
+            <img src="images/cat-1.png" alt="">
+            <h3>الوجبات السريعة</h3>
+         </a>
 
-<section class="category">
-   <h1 class="title">انواع الاطعمة</h1>
-   <div class="box-container">
+         <a href="category.php?category=main dish" class="box">
+            <img src="images/cat-2.png" alt="">
+            <h3>الوجبات الرئيسية</h3>
+         </a>
 
-      <a href="category.php?category=fast food" class="box">
-         <img src="images/cat-1.png" alt="">
-         <h3>الوجبات السريعة</h3>
-      </a>
+         <a href="category.php?category=drinks" class="box">
+            <img src="images/cat-3.png" alt="">
+            <h3>المشروبات</h3>
+         </a>
 
-      <a href="category.php?category=main dish" class="box">
-         <img src="images/cat-2.png" alt="">
-         <h3>الوجبات الرئيسية</h3>
-      </a>
+         <a href="category.php?category=desserts" class="box">
+            <img src="images/cat-4.png" alt="">
+            <h3>الحلويات</h3>
+         </a>
 
-      <a href="category.php?category=drinks" class="box">
-         <img src="images/cat-3.png" alt="">
-         <h3>المشروبات</h3>
-      </a>
+      </div>
+   </section>
 
-      <a href="category.php?category=desserts" class="box">
-         <img src="images/cat-4.png" alt="">
-         <h3>الحلويات</h3>
-      </a>
+   <section class="products">
+      <h1 class="title">أحدث الأطباق</h1>
+      <div class="box-container">
 
-   </div>
-</section>
-
-<section class="products">
-   <h1 class="title">أحدث الأطباق</h1>
-   <div class="box-container">
-
-      <?php
+         <?php
          $select_products = $conn->prepare("SELECT * FROM `products` LIMIT 6");
          $select_products->execute();
          if ($select_products->rowCount() > 0) {
@@ -118,53 +120,54 @@ include 'components/add_cart.php';
                $product_price = htmlspecialchars($fetch_products['price'], ENT_QUOTES, 'UTF-8');
                $product_image = htmlspecialchars($fetch_products['image'], ENT_QUOTES, 'UTF-8');
                $product_category = htmlspecialchars($fetch_products['category'], ENT_QUOTES, 'UTF-8');
-      ?>
-      <form action="" method="post" class="box">
-         <input type="hidden" name="pid" value="<?= $product_id; ?>">
-         <input type="hidden" name="name" value="<?= $product_name; ?>">
-         <input type="hidden" name="price" value="<?= $product_price; ?>">
-         <input type="hidden" name="image" value="<?= $product_image; ?>">
-         <a href="quick_view.php?pid=<?= $product_id; ?>" class="fas fa-eye"></a>
-         <button type="submit" class="fas fa-shopping-cart" name="add_to_cart"></button>
-         <img src="uploaded_img/<?= $product_image; ?>" alt="">
-         <a href="category.php?category=<?= $product_category; ?>" class="cat"><?= $product_category; ?></a>
-         <div class="name"><?= $product_name; ?></div>
-         <div class="flex">
-            <div class="price"><span>$</span><?= $product_price; ?></div>
-            <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
-         </div>
-      </form>
-      <?php
+         ?>
+               <form action="" method="post" class="box">
+                  <input type="hidden" name="pid" value="<?= $product_id; ?>">
+                  <input type="hidden" name="name" value="<?= $product_name; ?>">
+                  <input type="hidden" name="price" value="<?= $product_price; ?>">
+                  <input type="hidden" name="image" value="<?= $product_image; ?>">
+                  <a href="quick_view.php?pid=<?= $product_id; ?>" class="fas fa-eye"></a>
+                  <button type="submit" class="fas fa-shopping-cart" name="add_to_cart"></button>
+                  <img src="uploaded_img/<?= $product_image; ?>" alt="">
+                  <a href="category.php?category=<?= $product_category; ?>" class="cat"><?= $product_category; ?></a>
+                  <div class="name"><?= $product_name; ?></div>
+                  <div class="flex">
+                     <div class="price"><span>$</span><?= $product_price; ?></div>
+                     <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
+                  </div>
+               </form>
+         <?php
             }
          } else {
             echo '<p class="empty">لم تتم إضافة أي منتجات بعد!</p>';
          }
-      ?>
+         ?>
 
-   </div>
+      </div>
 
-   <div class="more-btn">
-      <a href="menu.php" class="btn">عرض الكل</a>
-   </div>
+      <div class="more-btn">
+         <a href="menu.php" class="btn">عرض الكل</a>
+      </div>
 
-</section>
+   </section>
 
-<?php include 'components/footer.php'; ?>
+   <?php include 'components/footer.php'; ?>
 
-<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-<script src="js/script.js"></script>
+   <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+   <script src="js/script.js"></script>
 
-<script>
-var swiper = new Swiper(".hero-slider", {
-   loop: true,
-   grabCursor: true,
-   effect: "flip",
-   pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-   },
-});
-</script>
+   <script>
+      var swiper = new Swiper(".hero-slider", {
+         loop: true,
+         grabCursor: true,
+         effect: "flip",
+         pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+         },
+      });
+   </script>
 
 </body>
+
 </html>

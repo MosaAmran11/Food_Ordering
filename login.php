@@ -70,34 +70,37 @@ if (empty($_SESSION['csrf_token'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>تسجيل الدخول</title>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-   <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-   
-<!-- header section starts  -->
-<?php include 'components/user_header.php'; ?>
-<!-- header section ends -->
 
-<section class="form-container">
-   <form action="" method="post">
-      <h3>تسجيل الدخول الآن</h3>
-      <input type="email" name="email" required placeholder="ادخل بريدك الالكتروني" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="password" name="pass" required placeholder="ادخل كلمه السر" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-      <!-- xss -->
-      <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>"> <!-- ترميز قيمة CSRF لتجنب XSS -->
-      <input type="submit" value="تسجيل الدخول" name="submit" class="btn">
-      <p>ليس لديك حساب؟<a href="register.php">انشاء حساب الان</a></p>
-   </form>
-</section>
+<body dir="rtl">
 
-<?php include 'components/footer.php'; ?>
+    <!-- header section starts  -->
+    <?php include 'components/user_header.php'; ?>
+    <!-- header section ends -->
 
-<script src="js/script.js"></script>
+    <section class="form-container">
+        <form action="" method="post">
+            <h3>تسجيل الدخول الآن</h3>
+            <input type="email" name="email" required placeholder="ادخل بريدك الالكتروني" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="pass" required placeholder="ادخل كلمه السر" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <!-- xss -->
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>"> <!-- ترميز قيمة CSRF لتجنب XSS -->
+            <input type="submit" value="تسجيل الدخول" name="submit" class="btn">
+            <p>ليس لديك حساب؟<a href="register.php">انشاء حساب الان</a></p>
+        </form>
+    </section>
+
+    <?php include 'components/footer.php'; ?>
+
+    <script src="js/script.js"></script>
 </body>
+
 </html>

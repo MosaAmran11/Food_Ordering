@@ -11,7 +11,8 @@ if (!isset($admin_id)) {
    exit(); // Add an exit statement after redirecting
 }
 
-function validateName($name) {
+function validateName($name)
+{
    // Add any validation rules for name here
    // For example, check if it's not empty
    if (empty($name)) {
@@ -20,7 +21,8 @@ function validateName($name) {
    return true;
 }
 
-function validatePassword($password, $confirmPassword) {
+function validatePassword($password, $confirmPassword)
+{
    // Add any validation rules for password here
    // For example, check if the password and confirm password match
    if ($password !== $confirmPassword) {
@@ -31,11 +33,11 @@ function validatePassword($password, $confirmPassword) {
 
 if (isset($_POST['submit'])) {
    $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
+   $name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
    $password = sha1($_POST['pass']);
-   $password = filter_var($password, FILTER_SANITIZE_STRING);
+   $password = filter_var($password, FILTER_SANITIZE_SPECIAL_CHARS);
    $confirmPassword = sha1($_POST['cpass']);
-   $confirmPassword = filter_var($confirmPassword, FILTER_SANITIZE_STRING);
+   $confirmPassword = filter_var($confirmPassword, FILTER_SANITIZE_SPECIAL_CHARS);
 
    // Validate name
    if (!validateName($name)) {
@@ -89,7 +91,7 @@ if (isset($_POST['submit'])) {
    <section class="form-container">
 
       <form action="" method="POST">
-         <h3>New User</h3>
+         <h3>New Admin</h3>
          <input type="text" name="name" maxlength="20" required placeholder="Enter your username" class="box" oninput="this.value = this.value.replace(/\s/g, '')">
          <input type="password" name="pass" maxlength="20" required placeholder="Enter your password" class="box" oninput="this.value = this.value.replace(/\s/g, '')">
          <input type="password" name="cpass" maxlength="20" required placeholder="Confirm your password" class="box" oninput="this.value = this.value.replace(/\s/g, '')">

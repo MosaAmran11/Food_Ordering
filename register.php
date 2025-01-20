@@ -10,12 +10,14 @@ if (isset($_SESSION['user_id'])) {
     $user_id = '';
 }
 
+$website_domain = 'http://localhost'; // عنوان الموقع
+
 // التحقق مما إذا كان النموذج قد تم تقديمه
 if (isset($_POST['submit'])) {
     // تصفية المدخلات مع التحقق من صحة البيانات
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $number = filter_input(INPUT_POST, 'number', FILTER_SANITIZE_STRING);
+    $number = filter_input(INPUT_POST, 'number', FILTER_SANITIZE_SPECIAL_CHARS);
     $pass = $_POST['pass'];
     $cpass = $_POST['cpass'];
 
@@ -35,10 +37,10 @@ if (isset($_POST['submit'])) {
     try {
         $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? OR number = ?");
         $select_user->execute([$email, $number]);
-        $row = $select_user->fetch(PDO::FETCH_ASSOC);
+        // $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
         if ($select_user->rowCount() > 0) {
-            $message[] = 'البريد الإلكتروني أو الرقم موجود بالفعل!';
+            $message[] = 'هذا الحساب موجود بالفعل! يرجى تسجيل الدخول';
         } else {
             if ($pass !== $cpass) {
                 $message[] = 'تأكيد كلمة المرور غير متطابقة!';
@@ -47,8 +49,8 @@ if (isset($_POST['submit'])) {
                 $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
 
                 // إدراج المستخدم
-                $insert_user = $conn->prepare("INSERT INTO `users`(name, email, number, password, is_verified) VALUES(?,?,?,?,0)");
-                
+                $insert_user = $conn->prepare("INSERT INTO `users`(name, email, number, password) VALUES(?,?,?,?)");
+
                 // بداية كود معالجة الأخطاء
                 if ($insert_user->execute([$name, $email, $number, $hashed_pass])) {
                     // إرسال بريد تأكيد
@@ -60,7 +62,7 @@ if (isset($_POST['submit'])) {
                     $insert_code->execute([$user_id, $verification_code]);
 
                     // إعداد رابط التحقق
-                    $verification_link = "http://yourdomain.com/verify_email.php?code=" . $verification_code;
+                    $verification_link = $website_domain . "/verify_email.php?code=" . $verification_code;
 
                     // إرسال البريد الإلكتروني (يمكنك استخدام PHPMailer أو mail())
                     $to = $email;
@@ -80,7 +82,7 @@ if (isset($_POST['submit'])) {
         }
     } catch (PDOException $e) {
         // معالجة الاستثناءات في حالة حدوث خطأ في قاعدة البيانات
-        $message[] = 'خطأ في قاعدة البيانات: ' . $e->getMessage();
+        $message[] = 'خطأ في الخادم';
     }
 }
 
@@ -88,44 +90,47 @@ if (isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>انشاء حساب</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انشاء حساب</title>
 
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
-<body>
-   
-<!-- header section starts  -->
-<?php include 'components/user_header.php'; ?>
-<!-- header section ends -->
 
-<section class="form-container">
+<body dir="rtl">
 
-   <form action="" method="post">
-      <h3>انشاء حساب</h3>
-      <input type="text" name="name" required placeholder="ادخل اسمك" class="box" maxlength="50">
-      <input type="email" name="email" required placeholder="ادخل بريدك الالكتروني" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="number" name="number" required placeholder="ادخل رقم هاتفك" class="box" min="0" max="9999999999" maxlength="10">
-      <input type="password" name="pass" required placeholder="ادخل كلمة سر" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="password" name="cpass" required placeholder="أكد رقمك السري" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="submit" value="انشاء حساب" name="submit" class="btn">
-      <p>هل لديك حساب من قبل ؟ <a href="login.php">تسجيل الدخول الآن</a></p>
-   </form>
+    <!-- header section starts  -->
+    <?php include 'components/user_header.php'; ?>
+    <!-- header section ends -->
 
-</section>
+    <section class="form-container">
 
-<?php include 'components/footer.php'; ?>
+        <form action="" method="post">
+            <h3>انشاء حساب</h3>
+            <input type="text" name="name" required placeholder="ادخل اسمك" class="box" maxlength="50">
+            <input type="email" name="email" required placeholder="ادخل بريدك الالكتروني" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="number" name="number" required placeholder="ادخل رقم هاتفك" class="box" min="0" max="9999999999" maxlength="10">
+            <input type="password" name="pass" required placeholder="ادخل كلمة سر" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="cpass" required placeholder="أكد كلمة السر" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="submit" value="انشاء حساب" name="submit" class="btn">
+            <p>هل لديك حساب من قبل ؟ <a href="login.php">تسجيل الدخول الآن</a></p>
+        </form>
 
-<!-- custom js file link  -->
-<script src="js/script.js"></script>
+    </section>
+
+    <?php include 'components/footer.php'; ?>
+
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
 
 </body>
+
 </html>
