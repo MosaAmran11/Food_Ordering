@@ -93,7 +93,8 @@ if (isset($_POST['submit'])) {
                 $grand_total = 0;
                 $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
                 $select_cart->execute([$user_id]);
-                if ($select_cart->rowCount() > 0) {
+                $total_products = $select_cart->rowCount();
+                if ($total_products > 0) {
                     while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
                         $grand_total += ($fetch_cart['price'] * $fetch_cart['quantity']);
                         echo '<p><span class="name">' . htmlspecialchars($fetch_cart['name'], ENT_QUOTES, 'UTF-8') . '</span><span class="price">$' . htmlspecialchars($fetch_cart['price'], ENT_QUOTES, 'UTF-8') . ' x ' . htmlspecialchars($fetch_cart['quantity'], ENT_QUOTES, 'UTF-8') . '</span></p>';

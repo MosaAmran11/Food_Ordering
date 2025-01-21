@@ -74,6 +74,7 @@ if (isset($_POST['submit'])) {
         $message[] = 'يرجى إدخال كلمة مرور جديدة!';
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -110,7 +111,6 @@ if (isset($_POST['submit'])) {
             <input type="password" name="confirm_pass" placeholder="تأكيد كلمة مرورك الجديدة" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
             <input type="submit" value="تحديث الآن" name="submit" class="btn">
         </form>
-    </section>
 
     <?php include 'components/footer.php'; ?>
 

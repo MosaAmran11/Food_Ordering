@@ -58,14 +58,9 @@ if (isset($message)) {
                <a href="profile.php" class="btn">الملف الشخصي</a>
                <a href="components/user_logout.php" onclick="return confirm('هل أنت متأكد من تسجيل الخروج؟');" class="delete-btn">تسجيل الخروج</a>
             </div>
-            <p class="account">
-               <a href="login.php">تسجيل الدخول</a> او
-               <a href="register.php">انشاء حساب</a>
-            </p>
          <?php
          } else {
          ?>
-            <!-- <p class="name">الرجاء تسجيل الدخول أولا!</p> -->
             <a href="register.php" class="btn">انشاء حساب</a>
             <a href="login.php" class="btn">تسجيل الدخول</a>
          <?php

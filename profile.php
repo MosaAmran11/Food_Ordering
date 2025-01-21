@@ -24,6 +24,13 @@ if (!$fetch_profile) {
     exit();
 }
 
+if (isset($_POST['delete'])) {
+    $delete_user = $conn->prepare("DELETE FROM `users` WHERE id = ?");
+    $delete_user->execute([$user_id]);
+    session_destroy();
+    header('location:home.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +66,9 @@ if (!$fetch_profile) {
             <a href="update_profile.php" class="btn">تحديث المعلومات</a>
             <p class="address"><i class="fas fa-map-marker-alt"></i><span><?php echo htmlspecialchars($fetch_profile['address'] ?: 'يرجى إدخال عنوانك', ENT_QUOTES, 'UTF-8'); ?></span></p>
             <a href="update_address.php" class="btn">تحديث العنوان</a>
+            <form action="" method="post">
+                <input type="submit" value="حذف الحساب" name="delete" class="btn" onclick="return confirm('هل أنت متأكد من حذف حسابك؟')">
+            </form>
         </div>
 
     </section>

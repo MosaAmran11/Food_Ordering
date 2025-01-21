@@ -93,15 +93,17 @@ if (isset($_POST['update'])) {
                <span>فئة الوجبة</span>
                <select name="category" class="box" required>
                   <option selected value="<?= $fetch_products['category']; ?>"><?= $fetch_products['category']; ?></option>
-                  <option value="main dish">الوجبات الرئيسية</option>
-                  <option value="fast food">الوجبات السريعة</option>
-                  <option value="drinks">المشروبات</option>
-                  <option value="desserts">الحلويات</option>
+                  <option value="وجبات رئيسية">الوجبات الرئيسية</option>
+                  <option value="وجبات سريعة">الوجبات السريعة</option>
+                  <option value="مشويات">المشويات</option>
+                  <option value="مشروبات">المشروبات</option>
+                  <option value="حلويات">الحلويات</option>
+                  <option value="معجنات">المعجنات</option>
                </select>
                <span>تعديل الصوره</span>
                <input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png, image/webp">
                <div class="flex-btn">
-                  <input type="submit" value="update" class="btn" name="update">
+                  <input type="submit" value="تحديث" class="btn" name="update">
                   <a href="products.php" class="option-btn">العودة للخلف</a>
                </div>
             </form>

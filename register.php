@@ -35,8 +35,8 @@ if (isset($_POST['submit'])) {
 
     // التحقق من وجود المستخدم
     try {
-        $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? OR number = ?");
-        $select_user->execute([$email, $number]);
+        $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ?");
+        $select_user->execute([$email]);
         // $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
         if ($select_user->rowCount() > 0) {
@@ -118,8 +118,8 @@ if (isset($_POST['submit'])) {
             <input type="text" name="name" required placeholder="ادخل اسمك" class="box" maxlength="50">
             <input type="email" name="email" required placeholder="ادخل بريدك الالكتروني" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
             <input type="number" name="number" required placeholder="ادخل رقم هاتفك" class="box" min="0" max="9999999999" maxlength="10">
-            <input type="password" name="pass" required placeholder="ادخل كلمة سر" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-            <input type="password" name="cpass" required placeholder="أكد كلمة السر" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="pass" required placeholder="ادخل كلمة مرور" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="cpass" required placeholder="أكد كلمة المرور" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
             <input type="submit" value="انشاء حساب" name="submit" class="btn">
             <p>هل لديك حساب من قبل ؟ <a href="login.php">تسجيل الدخول الآن</a></p>
         </form>

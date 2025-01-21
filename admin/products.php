@@ -96,10 +96,12 @@ if (isset($_GET['delete'])) {
             <input type="number" min="0" max="9999999999" required placeholder="enter product price" name="price" onkeypress="if(this.value.length == 10) return false;" class="box">
             <select name="category" class="box" required>
                 <option value="" disabled selected>اختر فئة الوجبات</option>
-                <option value="main dish">الوجبات الرئيسية</option>
-                <option value="fast food">الوجبات السريعة</option>
-                <option value="drinks">المشروبات</option>
-                <option value="desserts">الحلويات</option>
+                <option value="وجبات رئيسية">الوجبات الرئيسية</option>
+                <option value="وجبات سريعة">الوجبات السريعة</option>
+                <option value="مشويات">المشويات</option>
+                <option value="مشروبات">المشروبات</option>
+                <option value="حلويات">الحلويات</option>
+                <option value="معجنات">المعجنات</option>
             </select>
             <input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png, image/webp" required>
             <input type="submit" value="add product" name="add_product" class="btn">

@@ -80,27 +80,37 @@ include 'components/add_cart.php';
    </section>
 
    <section class="category">
-      <h1 class="title">انواع الاطعمة</h1>
+      <h1 class="title">أنواع الأطعمة</h1>
       <div class="box-container">
 
-         <a href="category.php?category=fast food" class="box">
+         <a href="category.php?category=وجبات سريعة" class="box">
             <img src="images/cat-1.png" alt="">
             <h3>الوجبات السريعة</h3>
          </a>
 
-         <a href="category.php?category=main dish" class="box">
+         <a href="category.php?category=وجبات رئيسية" class="box">
             <img src="images/cat-2.png" alt="">
             <h3>الوجبات الرئيسية</h3>
          </a>
 
-         <a href="category.php?category=drinks" class="box">
+         <a href="category.php?category=مشروبات" class="box">
             <img src="images/cat-3.png" alt="">
             <h3>المشروبات</h3>
          </a>
 
-         <a href="category.php?category=desserts" class="box">
+         <a href="category.php?category=حلويات" class="box">
             <img src="images/cat-4.png" alt="">
             <h3>الحلويات</h3>
+         </a>
+
+         <a href="category.php?category=مشويات" class="box">
+            <img src="images/cat-5.png" alt="">
+            <h3>مشويات</h3>
+         </a>
+
+         <a href="category.php?category=معجنات" class="box">
+            <img src="images/cat-6.png" alt="">
+            <h3>معجنات</h3>
          </a>
 
       </div>

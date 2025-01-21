@@ -44,7 +44,7 @@ if (!isset($admin_id)) {
          <div class="box">
             <h3>مرحباً</h3>
             <p><?= $fetch_profile['name']; ?></p>
-            <a href="update_profile.php" class="btn">تعديل الملف</a>
+            <a href="update_profile.php" class="btn">تعديل الملف الشخصي</a>
          </div>
 
          <div class="box">
@@ -57,7 +57,7 @@ if (!isset($admin_id)) {
             }
             ?>
             <h3><span>$</span><?= $total_pendings; ?><span>/-</span></h3>
-            <p>إجمالي المعلقات</p>
+            <p>إجمالي الطلبات المعلقة</p>
             <a href="placed_orders.php" class="btn">انظر الطلبات</a>
          </div>
 
@@ -71,7 +71,7 @@ if (!isset($admin_id)) {
             }
             ?>
             <h3><span>$</span><?= $total_completes; ?><span>/-</span></h3>
-            <p>يكتمل المجموع</p>
+            <p>إجمالي الطلبات المكتملة</p>
             <a href="placed_orders.php" class="btn">انظر الطلبات</a>
          </div>
 
@@ -82,7 +82,7 @@ if (!isset($admin_id)) {
             $numbers_of_orders = $select_orders->rowCount();
             ?>
             <h3><?= $numbers_of_orders; ?></h3>
-            <p>إجمالي الطلبات</p>
+            <p>عدد الطلبات</p>
             <a href="placed_orders.php" class="btn">انظر الطلبات</a>
          </div>
 
@@ -93,7 +93,7 @@ if (!isset($admin_id)) {
             $numbers_of_products = $select_products->rowCount();
             ?>
             <h3><?= $numbers_of_products; ?></h3>
-            <p>تمت إضافة المنتجات</p>
+            <p>عدد المنتجات</p>
             <a href="products.php" class="btn">رؤية المنتجات</a>
          </div>
 
@@ -115,8 +115,8 @@ if (!isset($admin_id)) {
             $numbers_of_admins = $select_admins->rowCount();
             ?>
             <h3><?= $numbers_of_admins; ?></h3>
-            <p>admins</p>
-            <a href="admin_accounts.php" class="btn">قائمه المدراء</a>
+            <p>حسابات المدراء</p>
+            <a href="admin_accounts.php" class="btn">قائمة المدراء</a>
          </div>
 
          <div class="box">

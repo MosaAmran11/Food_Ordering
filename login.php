@@ -90,7 +90,7 @@ if (empty($_SESSION['csrf_token'])) {
         <form action="" method="post">
             <h3>تسجيل الدخول الآن</h3>
             <input type="email" name="email" required placeholder="ادخل بريدك الالكتروني" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
-            <input type="password" name="pass" required placeholder="ادخل كلمه السر" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="pass" required placeholder="ادخل كلمة المرور" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
             <!-- xss -->
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>"> <!-- ترميز قيمة CSRF لتجنب XSS -->
             <input type="submit" value="تسجيل الدخول" name="submit" class="btn">
