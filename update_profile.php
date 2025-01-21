@@ -6,7 +6,7 @@ session_start();
 
 // إدارة الجلسات بشكل صحيح
 if (!isset($_SESSION['user_id'])) {
-    header('location:home.php');
+    header('location:index.php');
     exit();
 }
 
@@ -112,10 +112,10 @@ if (isset($_POST['submit'])) {
             <input type="submit" value="تحديث الآن" name="submit" class="btn">
         </form>
 
-    <?php include 'components/footer.php'; ?>
+        <?php include 'components/footer.php'; ?>
 
-    <!-- custom js file link  -->
-    <script src="js/script.js"></script>
+        <!-- custom js file link  -->
+        <script src="js/script.js"></script>
 
 </body>
 

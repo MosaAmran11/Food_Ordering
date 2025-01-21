@@ -39,7 +39,7 @@ include 'components/add_cart.php';
 
    <div class="heading">
       <h3>القائمة لدينا</h3>
-      <p><a href="home.php">الصفحة الرئيسية</a> <span> / قائمة الطعام</span></p>
+      <p><a href="index.php">الصفحة الرئيسية</a> <span> / قائمة الطعام</span></p>
    </div>
 
    <!-- menu section starts  -->

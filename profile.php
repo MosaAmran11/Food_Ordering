@@ -8,7 +8,7 @@ session_start(); // بدء جلسة المستخدم
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id']; // استعادة معرف المستخدم من الجلسة
 } else {
-    header('location:home.php'); // إعادة التوجيه إذا لم يكن المستخدم مسجلاً للدخول
+    header('location:index.php'); // إعادة التوجيه إذا لم يكن المستخدم مسجلاً للدخول
     exit(); // تأكد من إنهاء السكربت بعد إعادة التوجيه
 }
 
@@ -20,7 +20,7 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
 // التحقق من وجود بيانات المستخدم
 if (!$fetch_profile) {
     // إذا لم يتم العثور على المستخدم، إعادة التوجيه
-    header('location:home.php');
+    header('location:index.php');
     exit();
 }
 
@@ -28,7 +28,7 @@ if (isset($_POST['delete'])) {
     $delete_user = $conn->prepare("DELETE FROM `users` WHERE id = ?");
     $delete_user->execute([$user_id]);
     session_destroy();
-    header('location:home.php');
+    header('location:index.php');
     exit();
 }
 ?>

@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
                 $_SESSION['user_id'] = $row['id'];
                 // إعادة تعيين محاولات تسجيل الدخول
                 unset($_SESSION['login_attempts']);
-                header('location:home.php');
+                header('location:index.php');
                 exit(); // تأكد من إنهاء السكربت بعد إعادة التوجيه
             } else {
                 $message[] = 'خطأ في التحقق من الأمان!';

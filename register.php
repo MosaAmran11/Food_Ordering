@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
 
                     // إعادة توجيه المستخدم
                     $_SESSION['user_id'] = $user_id; // تعيين الجلسة
-                    header('location:home.php');
+                    header('location:index.php');
                     exit(); // تأكد من إنهاء السكربت بعد إعادة التوجيه
                 } else {
                     $message[] = 'حدث خطأ أثناء إنشاء الحساب!';

@@ -39,7 +39,7 @@ if (isset($_SESSION['user_id'])) {
 
    <div class="heading">
       <h3>معلومات عنا</h3>
-      <p><a href="home.php">الصفحة الرئيسية</a> <span> / عنا</span></p>
+      <p><a href="index.php">الصفحة الرئيسية</a> <span> / عنا</span></p>
    </div>
 
    <!-- about section starts  -->

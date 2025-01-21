@@ -97,7 +97,7 @@ $_SESSION['captcha_text'] = generateCaptcha();
 
     <div class="heading">
         <h3>اتصل بنا</h3>
-        <p><a href="home.php">الصفحة الرئيسية</a> <span> / اتصل</span></p>
+        <p><a href="index.php">الصفحة الرئيسية</a> <span> / اتصل</span></p>
     </div>
 
     <!-- contact section starts  -->

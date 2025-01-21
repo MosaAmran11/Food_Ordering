@@ -12,7 +12,7 @@ if (isset($_SESSION['user_id'])) {
    $user_id = $_SESSION['user_id'];
 } else {
    $user_id = '';
-   header('location:home.php');
+   header('location:index.php');
    exit(); // تأكد من إنهاء السكربت بعد إعادة التوجيه
 }
 
@@ -88,7 +88,7 @@ $grand_total = 0;
 
    <div class="heading">
       <h3>عربة التسوق</h3>
-      <p><a href="home.php">الصفحة الرئيسية</a> <span> / عربة التسوق</span></p>
+      <p><a href="index.php">الصفحة الرئيسية</a> <span> / عربة التسوق</span></p>
    </div>
 
    <!-- shopping cart section starts  -->

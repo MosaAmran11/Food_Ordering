@@ -13,7 +13,7 @@ if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 } else {
-    header('location:home.php');
+    header('location:index.php');
     exit();
 }
 
@@ -78,7 +78,7 @@ if (isset($_POST['submit'])) {
 
     <div class="heading">
         <h3>الدفع</h3>
-        <p><a href="home.php">الصفحة الرئيسية</a> <span> / الدفع</span></p>
+        <p><a href="index.php">الصفحة الرئيسية</a> <span> / الدفع</span></p>
     </div>
 
     <section class="checkout">
