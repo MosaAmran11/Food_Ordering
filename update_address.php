@@ -30,18 +30,8 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.example.com; font-src 'self' https://fonts.googleapis.com; script-src 'self' https://trusted-scripts.com;">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>update address</title>
-
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
-
+   <?php include 'components/header_meta.php'; ?>
+   <title>تحديث العنوان</title>
 </head>
 
 <body dir="rtl">
@@ -51,7 +41,7 @@ if (isset($_POST['submit'])) {
    <section class="form-container">
 
       <form action="" method="post">
-         <h3>your address</h3>
+         <h3>عنوانك</h3>
          <input type="text" class="box" placeholder="محافظة" required maxlength="50" name="area">
          <input type="text" class="box" placeholder="اسم المديرية" required maxlength="50" name="town">
          <input type="text" class="box" placeholder="اسم المنطقه" required maxlength="50" name="city">

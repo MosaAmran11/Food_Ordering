@@ -82,7 +82,7 @@ include 'components/add_cart.php';
    </section>
 
    <?php include 'components/footer.php'; ?>
-   <?php include 'components/footer_scripts.php'; ?>
+
 
 </body>
 

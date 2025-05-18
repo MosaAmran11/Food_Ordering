@@ -67,13 +67,6 @@ if (isset($_POST['submit'])) {
 <head>
     <?php include 'components/header_meta.php'; ?>
     <title>إتمام الطلب</title>
-
-    <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-    <!-- custom css file link  -->
-    <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body dir="rtl">
@@ -129,7 +122,7 @@ if (isset($_POST['submit'])) {
                 <a href="update_profile.php" class="btn">تعديل المعلومات</a>
                 <h3>عنوان التسليم الطلب</h3>
                 <p><i class="fas fa-map-marker-alt"></i><span><?php echo htmlspecialchars($fetch_profile['address'] ?: 'يرجى إدخال عنوانك', ENT_QUOTES, 'UTF-8'); ?></span></p>
-                <a href="update_address.php" class="btn">تعديل العنوان</a>
+                <a href="update_address.php" class="btn">تحديث العنوان</a>
                 <select name="method" class="box" required>
                     <option value="" disabled selected>اختار طريقة الدفع</option>
                     <option value="cash on delivery">الدفع عند الاستلام</option>
@@ -147,7 +140,7 @@ if (isset($_POST['submit'])) {
     </section>
 
     <?php include 'components/footer.php'; ?>
-    <?php include 'components/footer_scripts.php'; ?>
+
 
 </body>
 

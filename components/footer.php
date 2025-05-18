@@ -43,3 +43,6 @@
 <div class="loader">
    <img src="images/loader.gif" alt="">
 </div>
+
+<!-- Common scripts for all pages -->
+<script src="js/script.js"></script>

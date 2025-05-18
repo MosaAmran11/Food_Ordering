@@ -68,7 +68,7 @@ if (isset($_POST['delete'])) {
     </section>
 
     <?php include 'components/footer.php'; ?>
-    <?php include 'components/footer_scripts.php'; ?>
+
 
 </body>
 
