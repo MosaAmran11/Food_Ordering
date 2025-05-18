@@ -27,7 +27,7 @@ include 'components/add_cart.php';
 
 <head>
    <?php include 'components/header_meta.php'; ?>
-   <title>عرض سريع</title>
+   <title>عرض المنتج</title>
 </head>
 
 <body dir="rtl">
@@ -35,8 +35,8 @@ include 'components/add_cart.php';
    <?php include 'components/user_header.php'; ?>
 
    <div class="heading">
-      <h3>عرض سريع</h3>
-      <p><a href="index.php">الصفحة الرئيسية</a> <span> / عرض سريع</span></p>
+      <h3>عرض المنتج</h3>
+      <p><a href="index.php">الصفحة الرئيسية</a> <span> / عرض المنتج</span></p>
    </div>
 
    <section class="quick-view">
