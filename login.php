@@ -75,7 +75,7 @@ if (empty($_SESSION['csrf_token'])) {
 <html lang="en">
 
 <head>
-   <?php include 'components/header_meta.php'; ?>
+    <?php include 'components/header_meta.php'; ?>
     <title>تسجيل الدخول</title>
 </head>
 
@@ -98,7 +98,7 @@ if (empty($_SESSION['csrf_token'])) {
 
     <?php include 'components/footer.php'; ?>
 
-    <script src="js/script.js"></script>
+
 </body>
 
 </html>
