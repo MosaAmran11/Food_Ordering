@@ -27,34 +27,48 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` int(100) NOT NULL,
+  `id` int(100) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
-  `password` varchar(255) NOT NULL,  -- زيادة الطول ليتناسب مع التشفير
-  UNIQUE (`name`)  -- فرض عدم تكرار اسم المستخدم
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
-  `id` int(100) NOT NULL,
+  `id` int(100) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
-  `email` varchar(50) NOT NULL UNIQUE,  -- فرض عدم تكرار البريد الإلكتروني
+  `email` varchar(50) NOT NULL,
   `number` varchar(10) NOT NULL,
-  `password` varchar(255) NOT NULL,  -- زيادة الطول ليتناسب مع التشفير
+  `password` varchar(255) NOT NULL,
   `address` varchar(500) NOT NULL,
-  `email_verified` tinyint(1) NOT NULL DEFAULT 0,  -- تأكيد البريد الإلكتروني
+  `email_verified` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `category` varchar(100) NOT NULL,
+  `price` int(10) NOT NULL,
+  `image` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
 -- Table structure for table `cart`
 --
 
 CREATE TABLE `cart` (
-  `id` int(100) NOT NULL,
+  `id` int(100) NOT NULL AUTO_INCREMENT,
   `user_id` int(100) NOT NULL,
   `pid` int(100) NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -62,36 +76,18 @@ CREATE TABLE `cart` (
   `quantity` int(10) NOT NULL,
   `image` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),  -- Add index for foreign key
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE  -- ربط مع جدول المستخدمين
+  KEY `user_id` (`user_id`),
+  KEY `pid` (`pid`),
+  CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `products` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `messages`
---
-
-CREATE TABLE `messages` (
-  `id` int(100) NOT NULL,
-  `user_id` int(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `number` varchar(12) NOT NULL,
-  `message` varchar(500) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),  -- Add index for foreign key
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE  -- ربط مع جدول المستخدمين
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
-  `id` int(100) NOT NULL,
+  `id` int(100) NOT NULL AUTO_INCREMENT,
   `user_id` int(100) NOT NULL,
   `name` varchar(20) NOT NULL,
   `number` varchar(10) NOT NULL,
@@ -103,138 +99,45 @@ CREATE TABLE `orders` (
   `placed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `payment_status` varchar(20) NOT NULL DEFAULT 'pending',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),  -- Add index for foreign key
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE  -- ربط مع جدول المستخدمين
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `user_id` int(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `number` varchar(12) NOT NULL,
+  `message` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `email_verifications`
 --
 
 CREATE TABLE `email_verifications` (
-  `id` int(100) NOT NULL,
+  `id` int(100) NOT NULL AUTO_INCREMENT,
   `user_id` int(100) NOT NULL,
   `code` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),  -- Add index for foreign key
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE  -- ربط مع جدول المستخدمين
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `products`
---
-
-CREATE TABLE `products` (
-  `id` int(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `category` varchar(100) NOT NULL,
-  `price` int(10) NOT NULL,
-  `image` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `email_verifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE (`name`);  -- Ensure unique constraint on name
-
---
--- Indexes for table `cart`
---
--- ALTER TABLE `cart`
---   ADD PRIMARY KEY (`id`),
---   ADD KEY `user_id` (`user_id`);  -- Add index for foreign key
-
---
--- Indexes for table `messages`
---
--- ALTER TABLE `messages`
---   ADD PRIMARY KEY (`id`),
---   ADD KEY `user_id` (`user_id`);  -- Add index for foreign key
-
---
--- Indexes for table `orders`
---
--- ALTER TABLE `orders`
---   ADD PRIMARY KEY (`id`),
---   ADD KEY `user_id` (`user_id`);  -- Add index for foreign key
-
---
--- Indexes for table `products`
---
--- ALTER TABLE `products`
---   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
--- ALTER TABLE `users`
---   ADD PRIMARY KEY (`id`),
---   ADD UNIQUE KEY `email` (`email`);  -- Ensure unique constraint on email
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `cart`
---
-ALTER TABLE `cart`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `messages`
---
-ALTER TABLE `messages`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `email_verifications`
---
-ALTER TABLE `email_verifications`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
-
---
--- Init a superadmin in table `admin`
+-- Initial data for table `admin`
 --
 
 INSERT INTO `admin` (`id`, `name`, `password`) VALUES
 (1, 'system', '40bd001563085fc35165329ea1ff5c5ecbdbbeef'); -- password: 123
-
 
 COMMIT;
 

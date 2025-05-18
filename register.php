@@ -3,7 +3,9 @@
 include 'components/connect.php';
 include 'components/csrf.php';
 
-session_start(); // بدء جلسة المستخدم
+if (!isset($_SESSION)) {
+    session_start();
+} // بدء جلسة المستخدم
 
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id']; // استعادة معرف المستخدم من الجلسة

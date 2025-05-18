@@ -2,7 +2,9 @@
 
 include 'components/connect.php';
 
-session_start();
+if (!isset($_SESSION)) {
+   session_start();
+}
 
 if (isset($_SESSION['user_id'])) {
    $user_id = $_SESSION['user_id'];
@@ -18,52 +20,36 @@ include 'components/add_cart.php';
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.example.com; font-src 'self' https://fonts.googleapis.com; script-src 'self' https://trusted-scripts.com;">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>صفحة البحث</title>
-
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
-
+   <?php include 'components/header_meta.php'; ?>
+   <title>البحث</title>
 </head>
 
 <body dir="rtl">
 
-   <!-- header section starts  -->
    <?php include 'components/user_header.php'; ?>
-   <!-- header section ends -->
 
-   <!-- search form section starts  -->
+   <div class="heading">
+      <h3>البحث</h3>
+      <p><a href="index.php">الصفحة الرئيسية</a> <span> / البحث</span></p>
+   </div>
 
    <section class="search-form">
-      <form method="post" action="">
-         <input type="text" name="search_box" placeholder="البحث هنا..." class="box" required>
-         <button type="submit" name="search_btn" class="fas fa-search"></button>
+      <form action="" method="post">
+         <input type="text" name="search_box" placeholder="ابحث هنا..." required maxlength="100" class="box">
+         <button type="submit" class="fas fa-search" name="search_btn"></button>
       </form>
    </section>
 
-   <!-- search form section ends -->
-
-
-   <section class="products" style="min-height: 100vh; padding-top:0;">
-
+   <section class="products" style="padding-top: 0;">
       <div class="box-container">
-
          <?php
-         if (isset($_POST['search_box']) || isset($_POST['search_btn'])) {
-            $search_box = filter_input(INPUT_POST, 'search_box', FILTER_SANITIZE_SPECIAL_CHARS);
-            // التحقق من SQL Injection
-            $select_products = $conn->prepare("SELECT * FROM `products` WHERE name LIKE ?");
-            $select_products->execute(["%{$search_box}%"]);
-
+         if (isset($_POST['search_box']) or isset($_POST['search_btn'])) {
+            $search_box = $_POST['search_box'];
+            $search_box = filter_var($search_box, FILTER_SANITIZE_STRING);
+            $select_products = $conn->prepare("SELECT * FROM `products` WHERE name LIKE '%{$search_box}%' OR category LIKE '%{$search_box}%'");
+            $select_products->execute();
             if ($select_products->rowCount() > 0) {
                while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
-                  // تأكد من عدم عرض بيانات حساسة
                   $product_id = htmlspecialchars($fetch_products['id'], ENT_QUOTES, 'UTF-8');
                   $product_name = htmlspecialchars($fetch_products['name'], ENT_QUOTES, 'UTF-8');
                   $product_price = htmlspecialchars($fetch_products['price'], ENT_QUOTES, 'UTF-8');
@@ -88,21 +74,15 @@ include 'components/add_cart.php';
          <?php
                }
             } else {
-               echo '<p class="empty">لم تتم إضافة أي منتجات بعد!</p>';
+               echo '<p class="empty">لم يتم العثور على نتائج!</p>';
             }
          }
          ?>
-
       </div>
-
    </section>
 
-   <!-- footer section starts  -->
    <?php include 'components/footer.php'; ?>
-   <!-- footer section ends -->
-
-   <!-- custom js file link  -->
-   <script src="js/script.js"></script>
+   <?php include 'components/footer_scripts.php'; ?>
 
 </body>
 

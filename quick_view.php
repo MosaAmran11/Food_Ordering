@@ -2,13 +2,21 @@
 
 include 'components/connect.php';
 
-session_start();
+if (!isset($_SESSION)) {
+   session_start();
+}
 
 if (isset($_SESSION['user_id'])) {
    $user_id = $_SESSION['user_id'];
 } else {
    $user_id = '';
-};
+}
+
+if (isset($_GET['pid'])) {
+   $pid = $_GET['pid'];
+} else {
+   $pid = '';
+}
 
 include 'components/add_cart.php';
 
@@ -18,81 +26,55 @@ include 'components/add_cart.php';
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.example.com; font-src 'self' https://fonts.googleapis.com; script-src 'self' https://trusted-scripts.com;">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>quick view</title>
-
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
-
+   <?php include 'components/header_meta.php'; ?>
+   <title>عرض سريع</title>
 </head>
 
 <body dir="rtl">
 
    <?php include 'components/user_header.php'; ?>
 
+   <div class="heading">
+      <h3>عرض سريع</h3>
+      <p><a href="index.php">الصفحة الرئيسية</a> <span> / عرض سريع</span></p>
+   </div>
+
    <section class="quick-view">
-
-      <h1 class="title">quick view</h1>
-
       <?php
-      $pid = $_GET['pid'];
       $select_products = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
       $select_products->execute([$pid]);
       if ($select_products->rowCount() > 0) {
          while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
+            $product_id = htmlspecialchars($fetch_products['id'], ENT_QUOTES, 'UTF-8');
+            $product_name = htmlspecialchars($fetch_products['name'], ENT_QUOTES, 'UTF-8');
+            $product_price = htmlspecialchars($fetch_products['price'], ENT_QUOTES, 'UTF-8');
+            $product_image = htmlspecialchars($fetch_products['image'], ENT_QUOTES, 'UTF-8');
+            $product_category = htmlspecialchars($fetch_products['category'], ENT_QUOTES, 'UTF-8');
       ?>
             <form action="" method="post" class="box">
-               <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-               <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
-               <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
-               <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
-               <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-               <a href="category.php?category=<?= $fetch_products['category']; ?>" class="cat"><?= $fetch_products['category']; ?></a>
-               <div class="name"><?= $fetch_products['name']; ?></div>
+               <input type="hidden" name="pid" value="<?= $product_id; ?>">
+               <input type="hidden" name="name" value="<?= $product_name; ?>">
+               <input type="hidden" name="price" value="<?= $product_price; ?>">
+               <input type="hidden" name="image" value="<?= $product_image; ?>">
+               <img src="uploaded_img/<?= $product_image; ?>" alt="">
+               <a href="category.php?category=<?= $product_category; ?>" class="cat"><?= $product_category; ?></a>
+               <div class="name"><?= $product_name; ?></div>
                <div class="flex">
-                  <div class="price"><span>$</span><?= $fetch_products['price']; ?></div>
+                  <div class="price"><span>$</span><?= $product_price; ?></div>
                   <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
                </div>
-               <button type="submit" name="add_to_cart" class="cart-btn">add to cart</button>
+               <button type="submit" class="fas fa-shopping-cart" name="add_to_cart"></button>
             </form>
       <?php
          }
       } else {
-         echo '<p class="empty">لم تتم إضافة أي منتجات بعد!</p>';
+         echo '<p class="empty">لم يتم العثور على المنتج!</p>';
       }
       ?>
-
    </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    <?php include 'components/footer.php'; ?>
-
-
-   <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-
-   <!-- custom js file link  -->
-   <script src="js/script.js"></script>
-
+   <?php include 'components/footer_scripts.php'; ?>
 
 </body>
 

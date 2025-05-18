@@ -2,7 +2,9 @@
 
 include 'components/connect.php';
 
-session_start();
+if (!isset($_SESSION)) {
+   session_start();
+}
 
 if (!isset($_SESSION['csrf_token'])) {
    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -67,92 +69,75 @@ $grand_total = 0;
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.example.com; font-src 'self' https://fonts.googleapis.com; script-src 'self' https://trusted-scripts.com;">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>cart</title>
-
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
-
+   <?php include 'components/header_meta.php'; ?>
+   <title>سلة التسوق</title>
 </head>
 
 <body dir="rtl">
 
-   <!-- header section starts  -->
    <?php include 'components/user_header.php'; ?>
-   <!-- header section ends -->
 
    <div class="heading">
-      <h3>عربة التسوق</h3>
-      <p><a href="index.php">الصفحة الرئيسية</a> <span> / عربة التسوق</span></p>
+      <h3>سلة التسوق</h3>
+      <p><a href="index.php">الصفحة الرئيسية</a> <span> / سلة التسوق</span></p>
    </div>
 
-   <!-- shopping cart section starts  -->
-
-   <section class="products">
-
-      <h1 class="title">السلة الخاصة بك</h1>
-
+   <section class="shopping-cart">
+      <h1 class="title">المنتجات المضافة</h1>
       <div class="box-container">
-
          <?php
+         $grand_total = 0;
          $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
          $select_cart->execute([$user_id]);
          if ($select_cart->rowCount() > 0) {
             while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
-         ?>
-               <form action="" method="post" class="box">
-                  <input type="hidden" name="cart_id" value="<?= sanitize($fetch_cart['id']); ?>">
-                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-                  <a href="quick_view.php?pid=<?= sanitize($fetch_cart['pid']); ?>" class="fas fa-eye"></a>
-                  <button type="submit" class="fas fa-times" name="delete" onclick="return confirm('delete this item?');"></button>
-                  <img src="uploaded_img/<?= sanitize($fetch_cart['image']); ?>" alt="">
-                  <div class="name"><?= sanitize($fetch_cart['name']); ?></div>
-                  <div class="flex">
-                     <div class="price"><?= sanitize($fetch_cart['price']); ?><span>$دولار</span></div>
-                     <input type="number" name="qty" class="qty" min="1" max="99" value="<?= sanitize($fetch_cart['quantity']); ?>" maxlength="2">
-                     <button type="submit" class="fas fa-edit" name="update_qty"></button>
-                  </div>
-                  <div class="sub-total"> السعر الفرعي <span>دولار<?= $sub_total = ($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</span> </div>
-               </form>
-         <?php
+               $cart_id = htmlspecialchars($fetch_cart['id'], ENT_QUOTES, 'UTF-8');
+               $product_id = htmlspecialchars($fetch_cart['pid'], ENT_QUOTES, 'UTF-8');
+               $product_name = htmlspecialchars($fetch_cart['name'], ENT_QUOTES, 'UTF-8');
+               $product_price = htmlspecialchars($fetch_cart['price'], ENT_QUOTES, 'UTF-8');
+               $product_image = htmlspecialchars($fetch_cart['image'], ENT_QUOTES, 'UTF-8');
+               $product_qty = htmlspecialchars($fetch_cart['quantity'], ENT_QUOTES, 'UTF-8');
+               $sub_total = $product_price * $product_qty;
                $grand_total += $sub_total;
+         ?>
+               <div class="box">
+                  <a href="cart.php?delete=<?= $cart_id; ?>" class="fas fa-times" onclick="return confirm('هل تريد حذف هذا المنتج؟');"></a>
+                  <img src="uploaded_img/<?= $product_image; ?>" alt="">
+                  <div class="name"><?= $product_name; ?></div>
+                  <div class="price">$<?= $product_price; ?>/-</div>
+                  <form action="" method="post">
+                     <input type="hidden" name="cart_id" value="<?= $cart_id; ?>">
+                     <input type="number" min="1" max="99" name="qty" class="qty" value="<?= $product_qty; ?>">
+                     <button type="submit" class="fas fa-edit" name="update_qty"></button>
+                  </form>
+                  <div class="sub-total">المجموع الفرعي : <span>$<?= $sub_total; ?>/-</span></div>
+               </div>
+         <?php
             }
          } else {
-            echo '<p class="empty">your cart is empty</p>';
+            echo '<p class="empty">سلة التسوق فارغة!</p>';
          }
          ?>
-
       </div>
 
-      <div class="cart-total">
-         <p>مجموع سعر السلة<span>$<?= sanitize($grand_total); ?></span></p>
-         <a href="checkout.php" class="btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>">الانتقال إلى السداد</a>
-      </div>
-
-      <div class="more-btn">
-         <form action="" method="post">
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-            <button type="submit" class="delete-btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>" name="delete_all" onclick="return confirm('delete all from cart?');">حذف الكل من السلة</button>
-         </form>
-         <a href="menu.php" class="btn">مواصلة التسوق</a>
-      </div>
+      <?php if ($grand_total > 0) { ?>
+         <div class="cart-total">
+            <p>المجموع الكلي : <span>$<?= $grand_total; ?>/-</span></p>
+            <div class="flex">
+               <a href="menu.php" class="option-btn">مواصلة التسوق</a>
+               <a href="checkout.php" class="btn">إتمام الطلب</a>
+               <form action="" method="post">
+                  <input type="hidden" name="delete_all" value="true">
+                  <button type="submit" class="delete-btn" onclick="return confirm('هل تريد حذف كل المنتجات من السلة؟');">حذف الكل</button>
+               </form>
+            </div>
+         </div>
+      <?php } ?>
 
    </section>
 
-   <!-- shopping cart section ends -->
-
-   <!-- footer section starts  -->
    <?php include 'components/footer.php'; ?>
-   <!-- footer section ends -->
-
-   <!-- custom js file link  -->
-   <script src="js/script.js"></script>
+   <?php include 'components/footer_scripts.php'; ?>
 
 </body>
 

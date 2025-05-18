@@ -2,26 +2,15 @@
 
 include 'components/connect.php';
 
-session_start(); // بدء جلسة المستخدم
+if (!isset($_SESSION)) {
+    session_start();
+} // بدء جلسة المستخدم
 
 // التحقق مما إذا كان المستخدم مسجلاً للدخول
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id']; // استعادة معرف المستخدم من الجلسة
 } else {
-    header('location:index.php'); // إعادة التوجيه إذا لم يكن المستخدم مسجلاً للدخول
-    exit(); // تأكد من إنهاء السكربت بعد إعادة التوجيه
-}
-
-// استعلام لجلب معلومات المستخدم
-$select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
-$select_profile->execute([$user_id]);
-$fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-
-// التحقق من وجود بيانات المستخدم
-if (!$fetch_profile) {
-    // إذا لم يتم العثور على المستخدم، إعادة التوجيه
-    header('location:index.php');
-    exit();
+    $user_id = '';
 }
 
 if (isset($_POST['delete'])) {
@@ -37,47 +26,49 @@ if (isset($_POST['delete'])) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.example.com; font-src 'self' https://fonts.googleapis.com; script-src 'self' https://trusted-scripts.com;">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'components/header_meta.php'; ?>
     <title>الملف الشخصي</title>
-
-    <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-    <!-- custom css file link  -->
-    <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body dir="rtl">
 
-    <!-- header section starts  -->
     <?php include 'components/user_header.php'; ?>
-    <!-- header section ends -->
+
+    <div class="heading">
+        <h3>الملف الشخصي</h3>
+        <p><a href="index.php">الصفحة الرئيسية</a> <span> / الملف الشخصي</span></p>
+    </div>
 
     <section class="user-details">
-
         <div class="user">
-            <img src="images/user-icon.png" alt="">
-            <p><i class="fas fa-user"></i><span><span><?= htmlspecialchars($fetch_profile['name'], ENT_QUOTES, 'UTF-8'); ?></span></span></p>
-            <p><i class="fas fa-phone"></i><span><?= htmlspecialchars($fetch_profile['number'], ENT_QUOTES, 'UTF-8'); ?></span></p>
-            <p><i class="fas fa-envelope"></i><span><?= htmlspecialchars($fetch_profile['email'], ENT_QUOTES, 'UTF-8'); ?></span></p>
-            <a href="update_profile.php" class="btn">تحديث المعلومات</a>
-            <p class="address"><i class="fas fa-map-marker-alt"></i><span><?php echo htmlspecialchars($fetch_profile['address'] ?: 'يرجى إدخال عنوانك', ENT_QUOTES, 'UTF-8'); ?></span></p>
-            <a href="update_address.php" class="btn">تحديث العنوان</a>
+            <?php
+            $select_user = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+            $select_user->execute([$user_id]);
+            if ($select_user->rowCount() > 0) {
+                $fetch_user = $select_user->fetch(PDO::FETCH_ASSOC);
+            ?>
+                <img src="uploaded_img/<?= $fetch_user['image']; ?>" alt="">
+                <p><i class="fas fa-user"></i><span><?= $fetch_user['name']; ?></span></p>
+                <p><i class="fas fa-phone"></i><span><?= $fetch_user['number']; ?></span></p>
+                <p><i class="fas fa-envelope"></i><span><?= $fetch_user['email']; ?></span></p>
+                <a href="update_profile.php" class="btn">تحديث الملف الشخصي</a>
+                <p class="address"><i class="fas fa-map-marker-alt"></i><span><?php if ($fetch_user['address'] == '') {
+                                                                                    echo 'لم يتم إضافة عنوان';
+                                                                                } else {
+                                                                                    echo $fetch_user['address'];
+                                                                                } ?></span></p>
+                <a href="update_address.php" class="btn">تحديث العنوان</a>
+            <?php
+            }
+            ?>
             <form action="" method="post">
                 <input type="submit" value="حذف الحساب" name="delete" class="btn" onclick="return confirm('هل أنت متأكد من حذف حسابك؟')">
             </form>
         </div>
-
     </section>
 
     <?php include 'components/footer.php'; ?>
-
-    <!-- custom js file link  -->
-    <script src="js/script.js"></script>
+    <?php include 'components/footer_scripts.php'; ?>
 
 </body>
 

@@ -2,7 +2,9 @@
 
 include '../components/connect.php';
 
-session_start();
+if (!isset($_SESSION)) {
+   session_start();
+}
 
 $admin_id = $_SESSION['admin_id'];
 

@@ -3,7 +3,9 @@
 include 'components/connect.php';
 include 'components/csrf.php';
 
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 
 // إدارة الجلسات بشكل صحيح
 if (!isset($_SESSION['user_id'])) {

@@ -2,10 +2,10 @@
 
 include 'connect.php';
 
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 session_unset();
 session_destroy();
 
 header('location:../admin/admin_login.php');
-
-?>

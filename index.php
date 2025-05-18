@@ -2,7 +2,9 @@
 
 include 'components/connect.php';
 
-session_start();
+if (!isset($_SESSION)) {
+   session_start();
+}
 
 if (isset($_SESSION['user_id'])) {
    $user_id = $_SESSION['user_id'];
@@ -18,16 +20,9 @@ include 'components/add_cart.php';
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self'; font-src 'self' https://fonts.googleapis.com; script-src 'self';">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <?php include 'components/header_meta.php'; ?>
    <title>الصفحة الرئيسية</title>
-
-   <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-   <link rel="stylesheet" href="css/style.css">
-
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 </head>
 
 <body dir="rtl">
@@ -35,10 +30,8 @@ include 'components/add_cart.php';
    <?php include 'components/user_header.php'; ?>
 
    <section class="hero">
-
       <div class="swiper hero-slider">
          <div class="swiper-wrapper">
-
             <div class="swiper-slide slide">
                <div class="content">
                   <span>اطلب عبر الإنترنت</span>
@@ -71,19 +64,14 @@ include 'components/add_cart.php';
                   <img src="images/home-img-3.png" alt="">
                </div>
             </div>
-
          </div>
-
          <div class="swiper-pagination"></div>
-
       </div>
-
    </section>
 
    <section class="category">
       <h1 class="title">أنواع الأطعمة</h1>
       <div class="box-container">
-
          <a href="category.php?category=وجبات سريعة" class="box">
             <img src="images/cat-1.png" alt="">
             <h3>الوجبات السريعة</h3>
@@ -113,14 +101,12 @@ include 'components/add_cart.php';
             <img src="images/cat-6.png" alt="">
             <h3>معجنات</h3>
          </a>
-
       </div>
    </section>
 
    <section class="products">
       <h1 class="title">أحدث الأطباق</h1>
       <div class="box-container">
-
          <?php
          $select_products = $conn->prepare("SELECT * FROM `products` LIMIT 6");
          $select_products->execute();
@@ -153,31 +139,18 @@ include 'components/add_cart.php';
             echo '<p class="empty">لم تتم إضافة أي منتجات بعد!</p>';
          }
          ?>
-
       </div>
 
       <div class="more-btn">
          <a href="menu.php" class="btn">عرض الكل</a>
       </div>
-
    </section>
 
    <?php include 'components/footer.php'; ?>
 
-   <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-   <script src="js/script.js"></script>
-
-   <script nonce="swiper">
-      var swiper = new Swiper(".hero-slider", {
-         loop: true,
-         grabCursor: true,
-         effect: "flip",
-         pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-         },
-      });
-   </script>
+   <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+   <?php include 'components/footer_scripts.php'; ?>
+   <script src="js/swiper.js"></script>
 
 </body>
 
