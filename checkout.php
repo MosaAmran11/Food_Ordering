@@ -1,6 +1,7 @@
 <?php
 
 include 'components/connect.php';
+include 'components/csrf.php';
 
 session_start();
 
@@ -18,35 +19,40 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if (isset($_POST['submit'])) {
-    // تصفية المدخلات
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
-    $number = filter_input(INPUT_POST, 'number', FILTER_SANITIZE_SPECIAL_CHARS);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $method = filter_input(INPUT_POST, 'method', FILTER_SANITIZE_SPECIAL_CHARS);
-    $address = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
-    $total_products = filter_input(INPUT_POST, 'total_products', FILTER_SANITIZE_SPECIAL_CHARS);
-    $total_price = filter_input(INPUT_POST, 'total_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-
-    // التحقق من العنوان
-    if (empty($address)) {
-        $message[] = 'يرجى إضافة عنوانك!';
+    // Verify CSRF token
+    if (!CSRF::validateToken($_POST['csrf_token'])) {
+        $message[] = 'خطأ في التحقق من الأمان!';
     } else {
-        // التحقق من وجود عناصر في السلة
-        $check_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
-        $check_cart->execute([$user_id]);
+        // تصفية المدخلات
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
+        $number = filter_input(INPUT_POST, 'number', FILTER_SANITIZE_SPECIAL_CHARS);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $method = filter_input(INPUT_POST, 'method', FILTER_SANITIZE_SPECIAL_CHARS);
+        $address = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
+        $total_products = filter_input(INPUT_POST, 'total_products', FILTER_SANITIZE_SPECIAL_CHARS);
+        $total_price = filter_input(INPUT_POST, 'total_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        if ($check_cart->rowCount() > 0) {
-            // إدخال الطلب
-            $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price) VALUES(?,?,?,?,?,?,?,?)");
-            $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $total_price]);
-
-            // حذف العناصر من السلة
-            $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
-            $delete_cart->execute([$user_id]);
-
-            $message[] = 'تم تقديم الطلب بنجاح!';
+        // التحقق من العنوان
+        if (empty($address)) {
+            $message[] = 'يرجى إضافة عنوانك!';
         } else {
-            $message[] = 'سلة التسوق فارغة';
+            // التحقق من وجود عناصر في السلة
+            $check_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+            $check_cart->execute([$user_id]);
+
+            if ($check_cart->rowCount() > 0) {
+                // إدخال الطلب
+                $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price) VALUES(?,?,?,?,?,?,?,?)");
+                $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $total_price]);
+
+                // حذف العناصر من السلة
+                $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
+                $delete_cart->execute([$user_id]);
+
+                $message[] = 'تم تقديم الطلب بنجاح!';
+            } else {
+                $message[] = 'سلة التسوق فارغة';
+            }
         }
     }
 }
@@ -114,6 +120,7 @@ if (isset($_POST['submit'])) {
             <input type="hidden" name="number" value="<?= htmlspecialchars($fetch_profile['number'], ENT_QUOTES, 'UTF-8'); ?>">
             <input type="hidden" name="email" value="<?= htmlspecialchars($fetch_profile['email'], ENT_QUOTES, 'UTF-8'); ?>">
             <input type="hidden" name="address" value="<?= htmlspecialchars($fetch_profile['address'], ENT_QUOTES, 'UTF-8'); ?>">
+            <?php echo CSRF::getTokenField(); ?>
 
             <div class="user-info">
                 <h3>المعلومات الخاصة بك</h3>
