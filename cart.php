@@ -69,6 +69,7 @@ $grand_total = 0;
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.example.com; font-src 'self' https://fonts.googleapis.com; script-src 'self' https://trusted-scripts.com;">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>cart</title>
 

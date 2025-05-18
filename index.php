@@ -20,6 +20,7 @@ include 'components/add_cart.php';
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self'; font-src 'self' https://fonts.googleapis.com; script-src 'self';"> -->
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>الصفحة الرئيسية</title>
 
@@ -166,7 +167,7 @@ include 'components/add_cart.php';
    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
    <script src="js/script.js"></script>
 
-   <script>
+   <script nonce="swiper">
       var swiper = new Swiper(".hero-slider", {
          loop: true,
          grabCursor: true,
