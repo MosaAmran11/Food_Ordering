@@ -113,10 +113,6 @@ if (isset($_POST['submit'])) {
         </form>
 
         <?php include 'components/footer.php'; ?>
-
-        <!-- custom js file link  -->
-
-
 </body>
 
 </html>

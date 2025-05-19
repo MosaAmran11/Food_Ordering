@@ -123,14 +123,9 @@ if (isset($_POST['submit'])) {
             <input type="submit" value="انشاء حساب" name="submit" class="btn">
             <p>هل لديك حساب من قبل ؟ <a href="login.php">تسجيل الدخول الآن</a></p>
         </form>
-
     </section>
 
     <?php include 'components/footer.php'; ?>
-
-    <!-- custom js file link  -->
-
-
 </body>
 
 </html>

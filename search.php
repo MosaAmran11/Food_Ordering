@@ -80,10 +80,7 @@ include 'components/add_cart.php';
          ?>
       </div>
    </section>
-
    <?php include 'components/footer.php'; ?>
-
-
 </body>
 
 </html>

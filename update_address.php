@@ -35,11 +35,8 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body dir="rtl">
-
    <?php include 'components/user_header.php' ?>
-
    <section class="form-container">
-
       <form action="" method="post">
          <h3>عنوانك</h3>
          <input type="text" class="box" placeholder="محافظة" required maxlength="50" name="area">
@@ -51,27 +48,7 @@ if (isset($_POST['submit'])) {
       </form>
 
    </section>
-
-
-
-
-
-
-
-
-
-
    <?php include 'components/footer.php' ?>
-
-
-
-
-
-
-
-   <!-- custom js file link  -->
-
-
 </body>
 
 </html>
